@@ -8,6 +8,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { Plane } from "lucide-react";
+import touristBg1 from "@/assets/tourist-bg-1.jpg";
+import touristBg2 from "@/assets/tourist-bg-2.jpg";
+import touristBg3 from "@/assets/tourist-bg-3.jpg";
+import touristBg4 from "@/assets/tourist-bg-4.jpg";
+
+const backgroundImages = [touristBg1, touristBg2, touristBg3, touristBg4];
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -16,6 +22,7 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
+  const [currentBgIndex, setCurrentBgIndex] = useState(0);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -34,6 +41,14 @@ const Auth = () => {
 
     return () => subscription.unsubscribe();
   }, [navigate]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentBgIndex((prev) => (prev + 1) % backgroundImages.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,8 +102,23 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-secondary/10 p-4">
-      <Card className="w-full max-w-md shadow-lg">
+    <div className="min-h-screen flex items-center justify-center relative p-4 overflow-hidden">
+      {/* Background slideshow */}
+      {backgroundImages.map((bg, index) => (
+        <div
+          key={index}
+          className="absolute inset-0 transition-opacity duration-1000"
+          style={{
+            backgroundImage: `url(${bg})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            opacity: currentBgIndex === index ? 1 : 0,
+          }}
+        />
+      ))}
+      {/* Dark overlay for readability */}
+      <div className="absolute inset-0 bg-black/50" />
+      <Card className="w-full max-w-md shadow-lg relative z-10 backdrop-blur-sm bg-card/95">
         <CardHeader className="text-center space-y-2">
           <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary to-primary-glow rounded-full flex items-center justify-center mb-2">
             <Plane className="w-8 h-8 text-white" />
