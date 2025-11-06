@@ -5,10 +5,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Hotel, Plane, Utensils, MapPin, Compass, User } from "lucide-react";
 import { Session } from "@supabase/supabase-js";
+import hotelOffer1 from "@/assets/hotel-offer-1.jpg";
+import hotelOffer2 from "@/assets/hotel-offer-2.jpg";
+import hotelOffer3 from "@/assets/hotel-offer-3.jpg";
+import hotelOffer4 from "@/assets/hotel-offer-4.jpg";
 
 const Index = () => {
   const navigate = useNavigate();
   const [session, setSession] = useState<Session | null>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const hotelOffers = [hotelOffer1, hotelOffer2, hotelOffer3, hotelOffer4];
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -24,53 +31,97 @@ const Index = () => {
     return () => subscription.unsubscribe();
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % hotelOffers.length);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const features = [
     {
       title: "Hotels",
       description: "Find and book amazing hotels",
       icon: Hotel,
       path: "/hotels",
-      color: "from-primary to-primary/80",
+      color: "from-blue-500 via-blue-600 to-cyan-500",
     },
     {
       title: "Flights",
       description: "Search for the best flights",
       icon: Plane,
       path: "/flights",
-      color: "from-accent to-accent/80",
+      color: "from-purple-500 via-purple-600 to-pink-500",
     },
     {
       title: "Restaurants",
       description: "Discover great dining spots",
       icon: Utensils,
       path: "/restaurants",
-      color: "from-secondary to-secondary/80",
+      color: "from-orange-500 via-red-500 to-pink-500",
     },
     {
       title: "Tours",
       description: "Explore exciting tour packages",
       icon: Compass,
       path: "/tours",
-      color: "from-primary to-accent",
+      color: "from-green-500 via-emerald-500 to-teal-500",
     },
     {
       title: "Locations",
       description: "Find parking & shopping malls",
       icon: MapPin,
       path: "/locations",
-      color: "from-accent to-secondary",
+      color: "from-yellow-500 via-amber-500 to-orange-500",
     },
     {
       title: "Profile",
       description: "View your bookings",
       icon: User,
       path: "/profile",
-      color: "from-secondary to-primary",
+      color: "from-indigo-500 via-violet-500 to-purple-500",
     },
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-primary/5 to-secondary/5">
+      {/* Hotel Offers Sliding Banner */}
+      <div className="relative w-full h-64 md:h-80 overflow-hidden mb-8">
+        <div 
+          className="flex transition-transform duration-1000 ease-in-out h-full"
+          style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+        >
+          {hotelOffers.map((offer, index) => (
+            <div
+              key={index}
+              className="min-w-full h-full relative"
+            >
+              <img 
+                src={offer} 
+                alt={`Hotel offer ${index + 1}`}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
+            </div>
+          ))}
+        </div>
+        
+        {/* Slide Indicators */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+          {hotelOffers.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`w-2 h-2 rounded-full transition-all ${
+                currentSlide === index ? "bg-white w-8" : "bg-white/50"
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-6xl mx-auto space-y-12">
           {/* Header */}
