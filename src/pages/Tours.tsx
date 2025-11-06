@@ -46,7 +46,7 @@ const Tours = () => {
 
   return (
     <AuthGuard>
-      <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
+      <div className="min-h-screen bg-black">
         <Header />
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-6xl mx-auto space-y-6">

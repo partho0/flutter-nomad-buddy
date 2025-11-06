@@ -85,7 +85,7 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-primary/5 to-secondary/5">
+    <div className="min-h-screen bg-black">
       {/* Hotel Offers Sliding Banner */}
       <div className="relative w-full h-64 md:h-80 overflow-hidden mb-8">
         <div 
