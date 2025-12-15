@@ -12,7 +12,9 @@ import Tours from "./pages/Tours";
 import Locations from "./pages/Locations";
 import Profile from "./pages/Profile";
 import Booking from "./pages/Booking";
+import Install from "./pages/Install";
 import NotFound from "./pages/NotFound";
+import { InstallPrompt } from "./components/InstallPrompt";
 
 const queryClient = new QueryClient();
 
@@ -32,8 +34,10 @@ const App = () => (
           <Route path="/locations" element={<Locations />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/booking/:type/:id" element={<Booking />} />
+          <Route path="/install" element={<Install />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <InstallPrompt />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
