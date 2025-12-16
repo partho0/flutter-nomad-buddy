@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { X, Download, Smartphone } from "lucide-react";
+import { X, Download, Smartphone, Share } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { usePWAInstall } from "@/hooks/usePWAInstall";
 
 export const InstallPrompt = () => {
-  const { isInstallable, isInstalled, installApp } = usePWAInstall();
+  const { isInstallable, isInstalled, isIOS, canPrompt, installApp } = usePWAInstall();
   const [isDismissed, setIsDismissed] = useState(false);
 
   if (isInstalled || isDismissed || !isInstallable) {
@@ -12,9 +12,11 @@ export const InstallPrompt = () => {
   }
 
   const handleInstall = async () => {
-    const success = await installApp();
-    if (!success) {
-      setIsDismissed(true);
+    if (canPrompt) {
+      const success = await installApp();
+      if (!success) {
+        setIsDismissed(true);
+      }
     }
   };
 
@@ -34,20 +36,40 @@ export const InstallPrompt = () => {
         </div>
         <div className="flex-1">
           <h3 className="font-semibold text-foreground">Install TravelMate</h3>
-          <p className="text-sm text-muted-foreground mt-1">
-            Add to your home screen for quick access and offline support
-          </p>
+          {isIOS ? (
+            <p className="text-sm text-muted-foreground mt-1">
+              Tap <Share className="h-4 w-4 inline mx-1" /> then "Add to Home Screen"
+            </p>
+          ) : (
+            <p className="text-sm text-muted-foreground mt-1">
+              Add to your home screen for quick access and offline support
+            </p>
+          )}
         </div>
       </div>
       
-      <Button
-        onClick={handleInstall}
-        className="w-full mt-4"
-        size="sm"
-      >
-        <Download className="h-4 w-4 mr-2" />
-        Install App
-      </Button>
+      {canPrompt ? (
+        <Button
+          onClick={handleInstall}
+          className="w-full mt-4"
+          size="sm"
+        >
+          <Download className="h-4 w-4 mr-2" />
+          Install App
+        </Button>
+      ) : isIOS ? (
+        <div className="mt-4 p-3 bg-muted rounded-lg text-xs text-muted-foreground">
+          <ol className="list-decimal list-inside space-y-1">
+            <li>Tap the Share button in Safari</li>
+            <li>Scroll down and tap "Add to Home Screen"</li>
+            <li>Tap "Add" to install</li>
+          </ol>
+        </div>
+      ) : (
+        <div className="mt-4 p-3 bg-muted rounded-lg text-xs text-muted-foreground">
+          Use your browser menu to "Install app" or "Add to Home Screen"
+        </div>
+      )}
     </div>
   );
 };
