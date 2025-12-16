@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Plane } from "lucide-react";
+import { Plane, ArrowLeft } from "lucide-react";
 import touristBg1 from "@/assets/tourist-bg-1.jpg";
 import touristBg2 from "@/assets/tourist-bg-2.jpg";
 import touristBg3 from "@/assets/tourist-bg-3.jpg";
@@ -129,6 +129,15 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center relative p-4 overflow-hidden">
+      {/* Back button */}
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={() => navigate(-1)}
+        className="absolute top-4 left-4 z-20 bg-black/30 hover:bg-black/50 text-white"
+      >
+        <ArrowLeft className="h-5 w-5" />
+      </Button>
       {/* Background slideshow */}
       {backgroundImages.map((bg, index) => (
         <div
