@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Hotel, Plane, Utensils, MapPin, Compass, User } from "lucide-react";
 import { Session } from "@supabase/supabase-js";
+import { Header } from "@/components/Header";
 import hotelOffer1 from "@/assets/hotel-offer-1.jpg";
 import hotelOffer2 from "@/assets/hotel-offer-2.jpg";
 import hotelOffer3 from "@/assets/hotel-offer-3.jpg";
@@ -85,7 +86,8 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen" style={{ backgroundColor: "#D2FF72" }}>
+      {session && <Header />}
       {/* Hotel Offers Sliding Banner */}
       <div className="relative w-full h-64 md:h-80 overflow-hidden mb-8">
         <div 
